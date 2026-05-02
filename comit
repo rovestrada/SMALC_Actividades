@@ -1,0 +1,21 @@
+import cv2
+import numpy as np
+
+imagen = cv2.imread("C:\\Users\\yffjy\\Downloads\\canchafut.jpeg")
+hsv = cv2.cvtColor(imagen, cv2.COLOR_BGR2HSV) 
+naranja_bajo = np.array([10, 100, 100])
+naranja_alto = np.array([30, 255, 255])
+mascara = cv2.inRange(hsv,naranja_bajo,naranja_alto)    
+
+contornos, _ = cv2.findContours(mascara, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+cv2.drawContours(imagen, contornos, -1, (0, 255, 0), 2)
+if len(contornos) > 0:
+    c = max(contornos, key=cv2.contourArea)
+    area = cv2.contourArea(c)
+    print(f"area en pixeles: {area}")
+
+
+cv2.imshow("Mascara", mascara)
+cv2.imshow("Imagen", imagen)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
